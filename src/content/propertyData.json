@@ -1,0 +1,22 @@
+{
+  "_comment": "Fuente única de verdad — specs, precios, imágenes y copy de Lyrata Edén Urbano",
+  "project": {
+    "name": "Lyrata Edén Urbano",
+    "tagline": "",
+    "description": ""
+  },
+  "property": {
+    "type": "",
+    "bedrooms": null,
+    "bathrooms": null,
+    "area_m2": null,
+    "price": null,
+    "currency": "MXN"
+  },
+  "media": {
+    "images": []
+  },
+  "contact": {
+    "whatsapp": ""
+  }
+}
