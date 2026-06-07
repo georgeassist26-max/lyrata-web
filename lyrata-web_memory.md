@@ -11,15 +11,21 @@
 - [x] `propertyData.json` — fuente única de verdad (modelo livet-v2 completo)
 - [x] `BaseLayout.astro` — HTML5, SEO meta, JSON-LD SingleFamilyResidence, dark theme
 - [x] `Hero.astro` — CSS Sticky Scrollytelling, spotlight mask, top fade sin muro
-- [x] `BentoSpecs.astro` — Bento Grid 3 cols / 4 cards, dark mode, SVG checkmarks
-- [x] `index.astro` — Hero + BentoSpecs integrados
+- [x] `BentoSpecs.astro` — Bento Grid 4 cols, Planta Baja + Planta Alta + Recámara Principal (row-span-2) + Seguridad full-width
+- [x] `NatureSection.astro` — split-screen texto + imagen Unsplash
+- [x] `SecuritySection.astro` — bg-zinc-950, 3 cards con íconos SVG
+- [x] `AmenitiesIsland.tsx` — tabs interactivos con fade, `client:visible`
+- [x] `InteriorsSection.astro` — 2 bloques alternados imagen/texto
+- [x] `LeadWidget.tsx` — botón flotante premium WhatsApp, `client:load`
+- [x] `index.astro` — página completa integrada
 - [x] Sistema de memoria jerárquica implementado
-- [ ] `GalleryIsland.tsx` — galería interactiva `client:visible`
-- [ ] `LeadWidget.tsx` — botón flotante WhatsApp API `client:idle`
-- [ ] Sección CTA / contacto
-- [ ] Open Graph, sitemap, robots.txt
+- [x] Git commit final sesión Sun 2026-06-07
+- [ ] Reemplazar número WhatsApp en `LeadWidget.tsx` (`521XXXXXXXXXX`)
+- [ ] `GalleryIsland.tsx` — galería interactiva real con imágenes propias
+- [ ] Sección CTA / formulario de contacto
+- [ ] Open Graph tags, sitemap, robots.txt
 - [ ] Deploy Edge (Cloudflare o Vercel)
-- [ ] Audit Core Web Vitals
+- [ ] Audit Core Web Vitals < 1s móvil
 
 ## Notas de Arquitectura y Variables
 - **Ruta del proyecto:** `/Users/alfred/.openclaw/workspace/lyrata-web/`
@@ -31,3 +37,6 @@
 - **Cards Bento:** `bg-zinc-900 border border-white/10 rounded-3xl p-8`
 - **Accent color:** `text-emerald-400` | Overlines: `text-xs uppercase tracking-widest text-slate-500`
 - **Data access pattern:** `propertyData.json` → `development{}` + `models[]` → `.find(m => m.id === 'livet-v2')`
+- **BentoSpecs layout:** grid 4 cols | Recámara Principal usa `md:row-span-2` | stat highlight = "2 personas simultáneas"
+- **Orden de secciones en index.astro:** Hero → BentoSpecs → NatureSection → SecuritySection → AmenitiesIsland → InteriorsSection → LeadWidget
+- **WhatsApp URL:** `https://wa.me/521XXXXXXXXXX?text=Hola,...` — número pendiente de actualizar
