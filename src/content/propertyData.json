@@ -1,22 +1,73 @@
 {
-  "_comment": "Fuente única de verdad — specs, precios, imágenes y copy de Lyrata Edén Urbano",
-  "project": {
+  "development": {
     "name": "Lyrata Edén Urbano",
-    "tagline": "",
-    "description": ""
+    "location": "León, Guanajuato",
+    "globalSecurity": [
+      "Acceso controlado con cámaras y circuito cerrado en toda la privada",
+      "Malla electrificada en todo el perímetro de la privada"
+    ]
   },
-  "property": {
-    "type": "",
-    "bedrooms": null,
-    "bathrooms": null,
-    "area_m2": null,
-    "price": null,
-    "currency": "MXN"
-  },
-  "media": {
-    "images": []
-  },
-  "contact": {
-    "whatsapp": ""
-  }
+  "models": [
+    {
+      "id": "livet-v2",
+      "name": "LIVET V.2",
+      "price": "$3,370,000 MXN",
+      "dimensions": {
+        "lotSize": "6.70 x 18.00 m",
+        "landArea": "120.60 m2",
+        "constructionArea": "187.65 m2"
+      },
+      "rooms": {
+        "bedrooms": 3,
+        "bathrooms": 2.5,
+        "parkingSpaces": 2
+      },
+      "distribution": {
+        "groundFloor": [
+          "Cochera semitechada para 2 autos con firme de concreto y pórfido",
+          "1/2 baño con amplia barra de lavabo",
+          "Bodega debajo de la escalera",
+          "Amplia cocina con barra de granito natural",
+          "Gran alacena comunicada con área de cocina",
+          "Amplia sala y comedor",
+          "Patio social",
+          "Cuarto de servicio techado"
+        ],
+        "upperFloor": [
+          "Recámara secundaria con clóset",
+          "Recámara secundaria con clóset, cancel y amplia terraza",
+          "Baño común con lavabo independiente de WC y regadera (uso para 2 personas a la vez)",
+          "Amplia Zona Flex (multifuncional para sala de TV, Co-working o Gym)",
+          "Gran Recámara Principal con amplio vestidor, lavabo, WC y regadera independientes",
+          "Balcón en recámara principal"
+        ]
+      },
+      "finishes": {
+        "floors": [
+          "Interiores: Cerámico formato 60x60 cm",
+          "Patio Social: Cerámico formato 45x45 cm",
+          "Recámara Principal y Vestidor: Cerámico tipo madera de 15x60 cm",
+          "Regaderas: Mármol natural",
+          "Área de Servicio: Cerámico formato 60x60 cm"
+        ],
+        "facade": "Repello fino con pintura, molduras y rodapiés de cantera natural",
+        "bathrooms": "Lavabo cerámico sobre barra de mármol natural, accesorios cromados, canceles de cristal templado de 8mm (Satin Glass)",
+        "kitchen": "Barra de granito natural con zoclo perimetral"
+      },
+      "equipmentAndInstallations": {
+        "water": [
+          "Cisterna de 3,000 L con bomba sumergible",
+          "Calentador solar de 150 L",
+          "Calentador de paso de alta recuperación sincronizado con panel solar"
+        ],
+        "preparations": [
+          "Preparación para gas natural",
+          "Preparación para internet Megacable",
+          "Preparación para minisplit en todas las recámaras, área flex y estancia",
+          "Preparación para cargador de auto eléctrico en cochera (incluye registro y ductería)"
+        ],
+        "smartHome": "Cerradura inteligente de alta seguridad en puerta principal"
+      }
+    }
+  ]
 }

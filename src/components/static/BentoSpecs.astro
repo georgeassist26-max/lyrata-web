@@ -1,9 +1,228 @@
 ---
 // BentoSpecs.astro
-// Bento Grid de especificaciones técnicas de la propiedad
-// Renderizado 100% estático — cero JS en cliente
+// Static Ocean — Bento Grid de especificaciones de la propiedad
+// 100% server-rendered HTML, zero client JS
+import propertyData from '../../content/propertyData.json';
+
+const development = propertyData.development;
+const model = propertyData.models.find((m) => m.id === 'livet-v2')!;
 ---
 
-<section id="specs">
-  <!-- Placeholder: especificaciones se alimentarán desde propertyData.json -->
-</section>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-auto">
+
+  <!-- ┌─────────────────────────────────────────────────────────────┐
+       │  ROW 1 — Planta Baja (wide) · Dimensiones · Recámara (tall)│
+       └─────────────────────────────────────────────────────────────┘ -->
+
+  <!-- Card 1: Planta Baja — 2 cols wide -->
+  <div class="md:col-span-2 bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col gap-6">
+    <div>
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Distribución</p>
+      <h3 class="text-xl font-semibold text-white">Planta Baja</h3>
+    </div>
+    <ul class="grid sm:grid-cols-2 gap-x-6 gap-y-3">
+      {model.distribution.groundFloor.map((item) => (
+        <li class="flex items-start gap-3">
+          <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-slate-300 text-sm leading-snug">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Card 2: Dimensiones — 1 col square -->
+  <div class="md:col-span-1 bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col gap-5">
+    <div>
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Terreno & Construcción</p>
+      <h3 class="text-xl font-semibold text-white">Dimensiones</h3>
+    </div>
+    <ul class="flex flex-col gap-5">
+      <li class="flex flex-col gap-1">
+        <span class="text-slate-500 text-xs uppercase tracking-widest">Lote</span>
+        <span class="text-white text-xl font-light">{model.dimensions.lotSize}</span>
+      </li>
+      <div class="w-full h-px bg-white/10"></div>
+      <li class="flex flex-col gap-1">
+        <span class="text-slate-500 text-xs uppercase tracking-widest">Terreno</span>
+        <span class="text-white text-xl font-light">{model.dimensions.landArea}</span>
+      </li>
+      <div class="w-full h-px bg-white/10"></div>
+      <li class="flex flex-col gap-1">
+        <span class="text-slate-500 text-xs uppercase tracking-widest">Construcción</span>
+        <span class="text-emerald-400 text-2xl font-light">{model.dimensions.constructionArea}</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Card 3: Recámara Principal — 1 col, TALL (row-span-2) -->
+  <div class="md:col-span-1 md:row-span-2 bg-zinc-900 border border-emerald-400/25 rounded-3xl p-8 flex flex-col gap-6">
+    <div>
+      <p class="text-xs uppercase tracking-widest text-emerald-400 mb-1">Suite Principal</p>
+      <h3 class="text-xl font-semibold text-white">Recámara Principal</h3>
+    </div>
+    <!-- Big number accent -->
+    <div class="flex flex-col items-start gap-1 py-4 border-y border-white/10">
+      <span class="text-5xl font-light text-white">2</span>
+      <span class="text-slate-500 text-xs uppercase tracking-widest">personas simultáneas sin fricción</span>
+    </div>
+    <ul class="flex flex-col gap-4 flex-1">
+      <li class="flex items-start gap-3">
+        <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="text-slate-300 text-sm leading-snug">Amplio vestidor privado</span>
+      </li>
+      <li class="flex items-start gap-3">
+        <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="text-slate-300 text-sm leading-snug">Lavabo, WC y regadera independientes — 2 personas simultáneas</span>
+      </li>
+      <li class="flex items-start gap-3">
+        <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="text-slate-300 text-sm leading-snug">Cancel con salida directa a balcón privado</span>
+      </li>
+      <li class="flex items-start gap-3">
+        <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="text-slate-300 text-sm leading-snug">Piso cerámico tipo madera 15×60 cm</span>
+      </li>
+      <li class="flex items-start gap-3">
+        <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+          <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="text-slate-300 text-sm leading-snug">Regadera con mármol natural</span>
+      </li>
+    </ul>
+    <!-- Badge at bottom -->
+    <div class="mt-auto pt-4 border-t border-white/10">
+      <span class="inline-flex items-center gap-2 text-xs text-emerald-400 font-medium uppercase tracking-widest">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+        3 recámaras · 2.5 baños
+      </span>
+    </div>
+  </div>
+
+  <!-- ┌─────────────────────────────────────────────────────────────┐
+       │  ROW 2 — Planta Alta (wide) · Acabados (square)            │
+       └─────────────────────────────────────────────────────────────┘ -->
+
+  <!-- Card 4: Planta Alta — 2 cols wide -->
+  <div class="md:col-span-2 bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col gap-6">
+    <div>
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Distribución para el descanso y la productividad</p>
+      <h3 class="text-xl font-semibold text-white">Planta Alta</h3>
+    </div>
+    <ul class="grid sm:grid-cols-2 gap-x-6 gap-y-3">
+      {model.distribution.upperFloor.map((item) => (
+        <li class="flex items-start gap-3">
+          <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-slate-300 text-sm leading-snug">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <!-- Card 5: Acabados Premium — 1 col square -->
+  <div class="md:col-span-1 bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col gap-6">
+    <div>
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Materiales</p>
+      <h3 class="text-xl font-semibold text-white">Acabados Premium</h3>
+    </div>
+    <div class="flex flex-col gap-5">
+      <div class="flex flex-col gap-1.5">
+        <span class="text-xs uppercase tracking-widest text-slate-500">Cocina</span>
+        <p class="text-slate-300 text-sm leading-relaxed">{model.finishes.kitchen}</p>
+      </div>
+      <div class="w-full h-px bg-white/10"></div>
+      <div class="flex flex-col gap-1.5">
+        <span class="text-xs uppercase tracking-widest text-slate-500">Fachada</span>
+        <p class="text-slate-300 text-sm leading-relaxed">{model.finishes.facade}</p>
+      </div>
+      <div class="w-full h-px bg-white/10"></div>
+      <div class="flex flex-col gap-1.5">
+        <span class="text-xs uppercase tracking-widest text-slate-500">Baños</span>
+        <p class="text-slate-300 text-sm leading-relaxed">{model.finishes.bathrooms}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ┌─────────────────────────────────────────────────────────────┐
+       │  ROW 3 — Seguridad full-width anchor                       │
+       └─────────────────────────────────────────────────────────────┘ -->
+
+  <!-- Card 6: Seguridad y Equipamiento — full 4 cols -->
+  <div class="md:col-span-4 bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col gap-8">
+    <div>
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Privada & Hogar</p>
+      <h3 class="text-xl font-semibold text-white">Seguridad y Equipamiento</h3>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <!-- Seguridad -->
+      <div class="flex flex-col gap-3">
+        <span class="text-xs uppercase tracking-widest text-slate-500">Seguridad de la privada</span>
+        <ul class="flex flex-col gap-3">
+          {development.globalSecurity.map((item) => (
+            <li class="flex items-start gap-3">
+              <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2L10.5 5H14L11.5 7.5L12.5 11L8 9L3.5 11L4.5 7.5L2 5H5.5L8 2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+              </svg>
+              <span class="text-slate-300 text-sm leading-snug">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Smart Home -->
+      <div class="flex flex-col gap-3">
+        <span class="text-xs uppercase tracking-widest text-slate-500">Smart Home</span>
+        <div class="flex items-start gap-3">
+          <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+            <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="text-slate-300 text-sm leading-snug">{model.equipmentAndInstallations.smartHome}</span>
+        </div>
+      </div>
+
+      <!-- Agua & Energía -->
+      <div class="flex flex-col gap-3">
+        <span class="text-xs uppercase tracking-widest text-slate-500">Agua & Energía</span>
+        <ul class="flex flex-col gap-3">
+          {model.equipmentAndInstallations.water.map((item) => (
+            <li class="flex items-start gap-3">
+              <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="text-slate-300 text-sm leading-snug">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Preparaciones -->
+      <div class="flex flex-col gap-3">
+        <span class="text-xs uppercase tracking-widest text-slate-500">Preparaciones</span>
+        <ul class="flex flex-col gap-3">
+          {model.equipmentAndInstallations.preparations.map((item) => (
+            <li class="flex items-start gap-3">
+              <svg class="w-4 h-4 mt-0.5 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+                <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="text-slate-300 text-sm leading-snug">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+</div>

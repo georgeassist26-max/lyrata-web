@@ -1,9 +1,89 @@
 ---
 // Hero.astro
-// Sección principal: headline, subheadline y CTA primario
-// Renderizado 100% estático — cero JS en cliente
+// Static Ocean — CSS Sticky Scrollytelling Hero
+// 100% server-rendered HTML, zero client JS
+import propertyData from '../../content/propertyData.json';
+
+const development = propertyData.development;
+const model = propertyData.models.find((m) => m.id === 'livet-v2')!;
 ---
 
-<section id="hero">
-  <!-- Placeholder: contenido se alimentará desde propertyData.json -->
+<!-- Outer wrapper: sets the total scroll distance -->
+<section class="relative h-[200vh] bg-black">
+
+  <!-- ① Sticky background: sticks at top-0 for the full 200vh scroll -->
+  <div class="sticky top-0 h-screen w-full overflow-hidden">
+    <img
+      src="/3-houses-front.png"
+      alt="Vista frontal tres casas modelo LIVET V.2 — Lyrata Edén Urbano, León Guanajuato"
+      class="object-cover object-center w-full h-full"
+    />
+    <!-- Permanent bottom gradient for text readability -->
+    <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0.1) 50%, transparent 70%);"></div>
+  </div>
+
+  <!-- ② Scrolling content: pulled up to overlap the sticky background -->
+  <div class="relative z-10 -mt-[100vh]">
+
+    <!-- Spacer: user sees the full 3-house image on first load -->
+    <div class="h-[100vh]"></div>
+
+    <!-- ③ Content container with Spotlight Mask -->
+    <div
+      class="relative min-h-screen flex flex-col justify-end pb-24"
+      style="background: linear-gradient(to right, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.97) 13%, transparent 26%, transparent 74%, rgba(0,0,0,0.97) 87%, rgba(0,0,0,0.97) 100%);"
+    >
+      <!-- Top fade: starts fully transparent, only eases in below the roofline -->
+      <div
+        class="pointer-events-none absolute inset-0"
+        style="background: linear-gradient(to bottom, transparent 0%, transparent 45%, rgba(0,0,0,0.15) 58%, rgba(0,0,0,0.40) 72%, rgba(0,0,0,0.65) 88%, rgba(0,0,0,0.80) 100%);"
+        aria-hidden="true"
+      ></div>
+      <div class="flex flex-col items-center text-center px-6">
+
+        <!-- Overline: development name -->
+        <p class="tracking-widest text-slate-400 text-sm uppercase mb-5">
+          {development.name}
+        </p>
+
+        <!-- Headline: model name -->
+        <h1 class="text-5xl md:text-7xl font-light text-white tracking-tight leading-none">
+          {model.name}
+        </h1>
+
+        <!-- Price accent -->
+        <p class="text-2xl md:text-3xl font-medium text-emerald-400 mt-4 mb-10">
+          {model.price}
+        </p>
+
+        <!-- Metric badges -->
+        <div class="flex items-center gap-8 md:gap-14">
+
+          <!-- Bedrooms -->
+          <div class="flex flex-col items-center gap-1">
+            <span class="text-white text-2xl font-light">{model.rooms.bedrooms}</span>
+            <span class="text-slate-400 text-xs uppercase tracking-widest">Recámaras</span>
+          </div>
+
+          <div class="h-8 w-px bg-white/20" aria-hidden="true"></div>
+
+          <!-- Bathrooms -->
+          <div class="flex flex-col items-center gap-1">
+            <span class="text-white text-2xl font-light">{model.rooms.bathrooms}</span>
+            <span class="text-slate-400 text-xs uppercase tracking-widest">Baños</span>
+          </div>
+
+          <div class="h-8 w-px bg-white/20" aria-hidden="true"></div>
+
+          <!-- Construction area -->
+          <div class="flex flex-col items-center gap-1">
+            <span class="text-white text-2xl font-light">{model.dimensions.constructionArea}</span>
+            <span class="text-slate-400 text-xs uppercase tracking-widest">Construcción</span>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
 </section>

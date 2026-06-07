@@ -1,17 +1,24 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/static/Hero.astro';
+import BentoSpecs from '../components/static/BentoSpecs.astro';
+import NatureSection from '../components/static/NatureSection.astro';
+import SecuritySection from '../components/static/SecuritySection.astro';
+import InteriorsSection from '../components/static/InteriorsSection.astro';
+import AmenitiesIsland from '../components/islands/AmenitiesIsland';
+import LeadWidget from '../components/islands/LeadWidget';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Modelo LIVET V.2 | Lyrata Edén Urbano">
+  <Hero />
+  <section class="bg-black">
+    <div class="max-w-7xl mx-auto px-4 py-24">
+      <BentoSpecs />
+    </div>
+  </section>
+  <NatureSection />
+  <SecuritySection />
+  <AmenitiesIsland client:visible />
+  <InteriorsSection />
+  <LeadWidget client:load />
+</BaseLayout>

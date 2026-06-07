@@ -1,29 +1,70 @@
 ---
-// BaseLayout.astro
-// Global <head> tags, Open Graph meta, and JSON-LD Schema for GEO
+import propertyData from '../content/propertyData.json';
 import '../styles/global.css';
 
 export interface Props {
-  title?: string;
+  title: string;
   description?: string;
 }
 
-const { title = 'Lyrata Edén Urbano', description = '' } = Astro.props;
+const {
+  title,
+  description = 'Lyrata Edén Urbano — Casas nuevas residenciales en León, Guanajuato. Modelo LIVET V.2: 3 recámaras, 187.65 m² de construcción, acabados premium y tecnología inteligente.',
+} = Astro.props;
+
+// Extract development and model data
+const development = propertyData.development;
+const model = propertyData.models.find((m) => m.id === 'livet-v2')!;
+
+// CRITICAL: Strip "$", ",", and " MXN" → raw integer (e.g. "$3,370,000 MXN" → 3370000)
+const rawPrice = parseInt(model.price.replace(/[$,]/g, '').replace(' MXN', '').trim(), 10);
+
+// Build schema.org SingleFamilyResidence
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'SingleFamilyResidence',
+  name: `${development.name} — ${model.name}`,
+  description: description,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: 'León',
+    addressRegion: 'Guanajuato',
+    addressCountry: 'MX',
+  },
+  floorSize: {
+    '@type': 'QuantitativeValue',
+    value: 187.65,
+    unitCode: 'MTK',
+  },
+  numberOfRooms: model.rooms.bedrooms,
+  numberOfBathroomsTotal: model.rooms.bathrooms,
+  numberOfParkingSpaces: model.rooms.parkingSpaces,
+  lotSize: {
+    '@type': 'QuantitativeValue',
+    value: 120.60,
+    unitCode: 'MTK',
+  },
+  offers: {
+    '@type': 'Offer',
+    price: rawPrice,
+    priceCurrency: 'MXN',
+    availability: 'https://schema.org/InStock',
+  },
+};
 ---
 
 <!doctype html>
 <html lang="es">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <!-- JSON-LD / GEO Schema placeholder -->
-    <script type="application/ld+json">
-      {}
-    </script>
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
   </head>
-  <body>
-    <slot />
+  <body class="bg-black text-slate-200 font-sans antialiased">
+    <main>
+      <slot />
+    </main>
   </body>
 </html>

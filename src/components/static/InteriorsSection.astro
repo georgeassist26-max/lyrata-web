@@ -1,0 +1,59 @@
+---
+// InteriorsSection.astro
+// Static Ocean — Alternating feature blocks
+// 100% server-rendered HTML, zero client JS
+---
+
+<div class="max-w-7xl mx-auto px-4 py-24 space-y-24">
+
+  <!-- Block 1: Image Left, Text Right -->
+  <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Image -->
+    <div>
+      <img
+        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000"
+        alt="Diseño interior familiar Lyrata"
+        class="rounded-3xl aspect-video object-cover w-full"
+      />
+    </div>
+
+    <!-- Text -->
+    <div>
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Interiores</p>
+      <h3 class="text-3xl md:text-4xl font-light text-white mb-6">
+        Diseño que entiende a la familia moderna.
+      </h3>
+      <p class="text-lg text-slate-400 leading-relaxed">
+        El único desarrollo con un espacio dedicado y adaptado para tu mascota bajo la escalera. Además, cuartos de servicio 100% techados e independientes.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Block 2: Text Left, Image Right (reversed) -->
+  <div class="grid lg:grid-cols-2 gap-12 items-center">
+
+    <!-- Text (natural order on desktop, second on mobile) -->
+    <div class="order-2 lg:order-1">
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-4">Recámara Principal</p>
+      <h3 class="text-3xl md:text-4xl font-light text-white mb-6">
+        Privacidad y Funcionalidad.
+      </h3>
+      <p class="text-lg text-slate-400 leading-relaxed">
+        Vestidores inteligentes con lavabos independientes del WC y regadera, permitiendo a dos personas arreglarse simultáneamente sin fricción.
+      </p>
+    </div>
+
+    <!-- Image (first on mobile via order-1, right on desktop via order-2) -->
+    <div class="order-1 lg:order-2">
+      <img
+        src="https://images.unsplash.com/photo-1600566753086-00f18efc2291?auto=format&fit=crop&q=80&w=1000"
+        alt="Recámara principal Lyrata con vestidor independiente"
+        class="rounded-3xl aspect-video object-cover w-full"
+      />
+    </div>
+
+  </div>
+
+</div>
