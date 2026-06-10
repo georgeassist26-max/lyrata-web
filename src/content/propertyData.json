@@ -7,6 +7,13 @@
       "Malla electrificada en todo el perímetro de la privada"
     ]
   },
+  "modelLineup": [
+    { "id": "livet-v2", "label": "LIVET V2", "href": "/", "available": true },
+    { "id": "samara-v2", "label": "SAMARA V2", "href": "/samara-v2", "available": false },
+    { "id": "deus-v2", "label": "DEUS V2", "href": "/deus-v2", "available": false },
+    { "id": "zentia-v1", "label": "ZENTIA V1", "href": "/zentia-v1", "available": false },
+    { "id": "livet-roof-v2", "label": "LIVET CON ROOF V2", "href": "/livet-roof-v2", "available": false }
+  ],
   "models": [
     {
       "id": "livet-v2",

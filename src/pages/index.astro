@@ -1,16 +1,21 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/static/Hero.astro';
+import ModelSelector from '../components/static/ModelSelector.astro';
 import BentoSpecs from '../components/static/BentoSpecs.astro';
 import NatureSection from '../components/static/NatureSection.astro';
 import SecuritySection from '../components/static/SecuritySection.astro';
 import InteriorsSection from '../components/static/InteriorsSection.astro';
+import FaqSection from '../components/static/FaqSection.astro';
 import AmenitiesIsland from '../components/islands/AmenitiesIsland';
 import LeadWidget from '../components/islands/LeadWidget';
 ---
 
 <BaseLayout title="Modelo LIVET V.2 | Lyrata Edén Urbano">
   <Hero />
+  <div class="sticky top-0 z-40 backdrop-blur-md bg-black/80">
+    <ModelSelector activeId="livet-v2" />
+  </div>
   <section class="bg-black">
     <div class="max-w-7xl mx-auto px-4 py-24">
       <BentoSpecs />
@@ -20,5 +25,6 @@ import LeadWidget from '../components/islands/LeadWidget';
   <SecuritySection />
   <AmenitiesIsland client:visible />
   <InteriorsSection />
+  <FaqSection />
   <LeadWidget client:load />
 </BaseLayout>

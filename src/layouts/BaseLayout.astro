@@ -5,12 +5,19 @@ import '../styles/global.css';
 export interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
 
 const {
   title,
   description = 'Lyrata Edén Urbano — Casas nuevas residenciales en León, Guanajuato. Modelo LIVET V.2: 3 recámaras, 187.65 m² de construcción, acabados premium y tecnología inteligente.',
+  ogImage = '/og-livet-v2.jpg',
 } = Astro.props;
+
+// Canonical site origin. Override via PUBLIC_SITE_URL env at build time when domain is final.
+const SITE_URL = (import.meta.env.PUBLIC_SITE_URL ?? 'https://synexia.mx').replace(/\/$/, '');
+const canonical = new URL(Astro.url.pathname, SITE_URL).href;
+const ogImageUrl = new URL(ogImage, SITE_URL).href;
 
 // Extract development and model data
 const development = propertyData.development;
@@ -36,7 +43,10 @@ const schema = {
     value: 187.65,
     unitCode: 'MTK',
   },
+  url: canonical,
+  image: ogImageUrl,
   numberOfRooms: model.rooms.bedrooms,
+  numberOfBedrooms: model.rooms.bedrooms,
   numberOfBathroomsTotal: model.rooms.bathrooms,
   numberOfParkingSpaces: model.rooms.parkingSpaces,
   lotSize: {
@@ -49,7 +59,51 @@ const schema = {
     price: rawPrice,
     priceCurrency: 'MXN',
     availability: 'https://schema.org/InStock',
+    seller: {
+      '@type': 'RealEstateAgent',
+      name: 'Synexia Bienes Raíces',
+    },
   },
+};
+
+// AEO: FAQPage schema — what answer engines (ChatGPT, Perplexity, Google AI) quote directly.
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Cuánto cuesta la casa modelo LIVET V.2 en Lyrata Edén Urbano?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `El modelo LIVET V.2 tiene un precio de ${model.price}. Incluye ${model.rooms.bedrooms} recámaras, ${model.rooms.bathrooms} baños y ${model.dimensions.constructionArea} de construcción en León, Guanajuato.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Dónde se ubica el desarrollo Lyrata Edén Urbano?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Lyrata Edén Urbano es un desarrollo residencial de casas nuevas en León, Guanajuato, con acceso controlado, circuito cerrado de cámaras y malla electrificada perimetral en toda la privada.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cuántas recámaras y baños tiene el modelo LIVET V.2?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: `El modelo LIVET V.2 cuenta con ${model.rooms.bedrooms} recámaras (incluida una recámara principal con vestidor y baño completo independiente), ${model.rooms.bathrooms} baños y cochera para ${model.rooms.parkingSpaces} autos.`,
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Qué tecnología y equipamiento incluye la casa?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Incluye cerradura inteligente en puerta principal, calentador solar de 150 L, cisterna de 3,000 L con bomba, y preparación para minisplits, gas natural, internet y cargador de auto eléctrico.',
+      },
+    },
+  ],
 };
 ---
 
@@ -60,9 +114,57 @@ const schema = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Favicons -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- LCP preload: hero AVIF (smallest), fetched at highest priority -->
+    <link rel="preload" as="image" href="/3-houses-front.avif" type="image/avif" fetchpriority="high" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="Synexia Bienes Raíces" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
     <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
   </head>
   <body class="bg-black text-slate-200 font-sans antialiased">
+    <!-- Subtle, Apple-like Top Bar -->
+    <header class="absolute top-0 left-0 w-full z-50 pointer-events-none">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-center">
+        <div class="flex items-center gap-2.5 pointer-events-auto mx-auto">
+          <img 
+            src="/synexia-logo-transparent.png" 
+            alt="Synexia Bienes Raíces" 
+            width="171"
+            height="120"
+            decoding="async"
+            class="h-5 w-auto object-contain opacity-80 hover:opacity-100 transition-opacity duration-300"
+          />
+          <span class="text-xs font-light tracking-widest text-neutral-300 uppercase opacity-75 hover:opacity-100 transition-opacity duration-300 select-none">
+            Synexia Bienes Raíces
+          </span>
+        </div>
+      </div>
+    </header>
+
     <main>
       <slot />
     </main>

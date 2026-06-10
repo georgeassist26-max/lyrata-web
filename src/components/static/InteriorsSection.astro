@@ -11,11 +11,19 @@
 
     <!-- Image -->
     <div>
-      <img
-        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&q=80&w=1000"
-        alt="Diseño interior familiar Lyrata"
-        class="rounded-3xl aspect-video object-cover w-full"
-      />
+      <picture>
+        <source srcset="/images/sala-flex.avif" type="image/avif" />
+        <source srcset="/images/sala-flex.webp" type="image/webp" />
+        <img
+          src="/images/sala-flex.webp"
+          alt="Sala flex interior del modelo LIVET V.2 — espacio adaptable para la familia moderna"
+          width="1200"
+          height="800"
+          loading="lazy"
+          decoding="async"
+          class="rounded-3xl aspect-video object-cover w-full"
+        />
+      </picture>
     </div>
 
     <!-- Text -->
@@ -47,11 +55,19 @@
 
     <!-- Image (first on mobile via order-1, right on desktop via order-2) -->
     <div class="order-1 lg:order-2">
-      <img
-        src="https://images.unsplash.com/photo-1600566753086-00f18efc2291?auto=format&fit=crop&q=80&w=1000"
-        alt="Recámara principal Lyrata con vestidor independiente"
-        class="rounded-3xl aspect-video object-cover w-full"
-      />
+      <picture>
+        <source srcset="/images/big-bathroom.avif" type="image/avif" />
+        <source srcset="/images/big-bathroom.webp" type="image/webp" />
+        <img
+          src="/images/big-bathroom.webp"
+          alt="Recámara principal del modelo LIVET V.2 — baño principal amplio con acabados premium"
+          width="1200"
+          height="800"
+          loading="lazy"
+          decoding="async"
+          class="rounded-3xl aspect-video object-cover w-full"
+        />
+      </picture>
     </div>
 
   </div>

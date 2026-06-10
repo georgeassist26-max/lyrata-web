@@ -10,21 +10,24 @@ const amenities = [
     label: 'Alberca',
     title: 'Alberca climatizada oculta a la calle.',
     description: 'Diseñada para mantener tu privacidad sin sacrificar el lujo. Temperatura perfecta todo el año.',
-    image: 'https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=1000',
+    avif: '/images/alberca.avif',
+    image: '/images/alberca.webp',
   },
   {
     id: 1,
     label: 'Gimnasio & Co-working',
     title: 'Gimnasio equipado y área Co-working.',
     description: 'Entrena o trabaja sin salir de la privada. Espacios diseñados para el estilo de vida moderno.',
-    image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1000',
+    avif: '/images/gym.avif',
+    image: '/images/gym.webp',
   },
   {
     id: 2,
     label: 'Sustentabilidad',
     title: 'Diseño inteligente de recolección de residuos.',
     description: 'Un sistema limpio y eficiente que mantiene la privada impecable y reduce el impacto ambiental.',
-    image: 'https://images.unsplash.com/photo-1600607686527-6fb886090705?auto=format&fit=crop&w=1000',
+    avif: '/images/sustentabilidad.avif',
+    image: '/images/sustentabilidad.webp',
   },
 ];
 
@@ -78,12 +81,19 @@ export default function AmenitiesIsland() {
       >
         {/* Image */}
         <div className="aspect-[4/3] rounded-3xl overflow-hidden">
-          <img
-            key={current.id}
-            src={current.image}
-            alt={current.title}
-            className="w-full h-full object-cover"
-          />
+          <picture key={current.id}>
+            <source srcSet={current.avif} type="image/avif" />
+            <source srcSet={current.image} type="image/webp" />
+            <img
+              src={current.image}
+              alt={current.title}
+              width={1200}
+              height={900}
+              loading="lazy"
+              decoding="async"
+              className="w-full h-full object-cover"
+            />
+          </picture>
         </div>
 
         {/* Text */}

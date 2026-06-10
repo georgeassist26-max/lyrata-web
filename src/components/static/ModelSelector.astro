@@ -1,0 +1,83 @@
+---
+// ModelSelector.astro
+// Static Ocean — Selector de modelos de casa (cero JS en cliente)
+// Tabs basados en <a>: navegables, crawleables, sin hidratación.
+// El modelo activo se pasa por prop `activeId`.
+import propertyData from '../../content/propertyData.json';
+
+export interface Props {
+  activeId: string;
+}
+
+const { activeId } = Astro.props;
+const lineup = propertyData.modelLineup;
+---
+
+<nav
+  class="w-full bg-black border-b border-white/10"
+  aria-label="Selector de modelos de casa"
+>
+  <div class="max-w-7xl mx-auto px-4">
+    <ul
+      class="flex items-center justify-start md:justify-center gap-2 md:gap-3 py-3 overflow-x-auto scrollbar-none"
+    >
+      {
+        lineup.map((m) => {
+          const isActive = m.id === activeId;
+
+          // Modelo activo / seleccionado
+          if (isActive) {
+            return (
+              <li class="shrink-0">
+                <span
+                  aria-current="page"
+                  class="inline-flex items-center rounded-full bg-white px-4 py-2 text-xs font-medium uppercase tracking-widest text-black whitespace-nowrap"
+                >
+                  {m.label}
+                </span>
+              </li>
+            );
+          }
+
+          // Modelo disponible (otra página existente)
+          if (m.available) {
+            return (
+              <li class="shrink-0">
+                <a
+                  href={m.href}
+                  class="inline-flex items-center rounded-full border border-white/15 px-4 py-2 text-xs font-medium uppercase tracking-widest text-slate-300 whitespace-nowrap transition-colors duration-300 hover:border-white/40 hover:text-white"
+                >
+                  {m.label}
+                </a>
+              </li>
+            );
+          }
+
+          // Modelo próximamente (página aún no publicada → no enlazamos para evitar 404)
+          return (
+            <li class="shrink-0">
+              <span
+                aria-disabled="true"
+                title="Próximamente"
+                class="inline-flex items-center rounded-full border border-white/10 px-4 py-2 text-xs font-medium uppercase tracking-widest text-slate-500 whitespace-nowrap cursor-not-allowed"
+              >
+                {m.label}
+              </span>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </div>
+</nav>
+
+<style>
+  /* Oculta la barra de scroll horizontal en móvil sin perder el desplazamiento */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+</style>

@@ -3,6 +3,7 @@
 // Static Ocean — CSS Sticky Scrollytelling Hero
 // 100% server-rendered HTML, zero client JS
 import propertyData from '../../content/propertyData.json';
+import heroLqip from '../../content/hero-lqip.txt?raw';
 
 const development = propertyData.development;
 const model = propertyData.models.find((m) => m.id === 'livet-v2')!;
@@ -12,12 +13,23 @@ const model = propertyData.models.find((m) => m.id === 'livet-v2')!;
 <section class="relative h-[200vh] bg-black">
 
   <!-- ① Sticky background: sticks at top-0 for the full 200vh scroll -->
-  <div class="sticky top-0 h-screen w-full overflow-hidden">
-    <img
-      src="/3-houses-front.png"
-      alt="Vista frontal tres casas modelo LIVET V.2 — Lyrata Edén Urbano, León Guanajuato"
-      class="object-cover object-center w-full h-full"
-    />
+  <div
+    class="sticky top-0 h-screen w-full overflow-hidden"
+    style={`background-image:url(${heroLqip.trim()});background-size:cover;background-position:center;`}
+  >
+    <picture>
+      <source srcset="/3-houses-front.avif" type="image/avif" />
+      <source srcset="/3-houses-front.webp" type="image/webp" />
+      <img
+        src="/3-houses-front.webp"
+        alt="Vista frontal de tres casas modelo LIVET V.2 en Lyrata Edén Urbano, León, Guanajuato"
+        width="1600"
+        height="1059"
+        fetchpriority="high"
+        decoding="async"
+        class="object-cover object-center w-full h-full"
+      />
+    </picture>
     <!-- Permanent bottom gradient for text readability -->
     <div class="absolute inset-0" style="background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 25%, rgba(0,0,0,0.1) 50%, transparent 70%);"></div>
   </div>
