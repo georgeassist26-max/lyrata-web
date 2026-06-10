@@ -29,10 +29,10 @@
   - CLS: width/height + loading=lazy + decoding=async en TODAS las imágenes (Nature, Interiors, Amenities, logo).
   - `robots.txt` (welcome GPTBot/PerplexityBot/Google-Extended/ClaudeBot) + `@astrojs/sitemap` (sitemap-index.xml). `site` configurado en astro.config.
 - [x] Sistema de memoria jerárquica implementado
-- [x] Git commit final sesión Sun 2026-06-07 10:07 CST
+- [x] `GalleryIsland.tsx` — galería interactiva real con imágenes propias -> No requerida tras integrar imágenes nativas por secciones
+- [x] Reemplazar imágenes Unsplash con reales y optimizadas (WebP/AVIF) en Nature, Amenities e Interiors (sesión 2026-06-09)
 - [ ] Reemplazar número WhatsApp en `LeadWidget.tsx` (`521XXXXXXXXXX`)
 - [ ] Crear páginas de los otros modelos: `/samara-v2`, `/deus-v2`, `/zentia-v1`, `/livet-roof-v2` (hoy marcados `available:false` → placeholder "Próximamente", sin enlace para evitar 404). Al publicarlos: poner `available:true` en `modelLineup` y pasar `activeId` correcto al `<ModelSelector>` de cada página.
-- [ ] `GalleryIsland.tsx` — galería interactiva real con imágenes propias
 - [ ] Sección CTA / formulario de contacto
 - [ ] Open Graph tags, sitemap, robots.txt
 - [ ] Deploy Edge (Cloudflare o Vercel)
