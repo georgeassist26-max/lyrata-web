@@ -73,37 +73,77 @@ const faqSchema = {
   mainEntity: [
     {
       '@type': 'Question',
-      name: '¿Cuánto cuesta la casa modelo LIVET V.2 en Lyrata Edén Urbano?',
+      name: '¿Qué es Lyrata Edén Urbano y dónde está exactamente ubicado?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: `El modelo LIVET V.2 tiene un precio de ${model.price}. Incluye ${model.rooms.bedrooms} recámaras, ${model.rooms.bathrooms} baños y ${model.dimensions.constructionArea} de construcción en León, Guanajuato.`,
-      },
+        text: 'Lyrata Edén Urbano es un desarrollo residencial premium ideal para familias que buscan exclusividad y contacto con la naturaleza, ubicado exactamente en la zona norte de León, Guanajuato, con un acceso rápido por Boulevard Hidalgo y Boulevard José María Morelos.'
+      }
     },
     {
       '@type': 'Question',
-      name: '¿Dónde se ubica el desarrollo Lyrata Edén Urbano?',
+      name: '¿Cuáles son las dimensiones y características exactas del Modelo Livet V.2?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Lyrata Edén Urbano es un desarrollo residencial de casas nuevas en León, Guanajuato, con acceso controlado, circuito cerrado de cámaras y malla electrificada perimetral en toda la privada.',
-      },
+        text: `El Modelo Livet V.2 cuenta con un lote de 6.70 x 18.00 metros (${model.dimensions.landArea} de terreno), ${model.dimensions.constructionArea} de construcción distribuidos eficientemente, ${model.rooms.bedrooms} recámaras bien iluminadas y ${model.rooms.bathrooms} baños equipados con acabados de la más alta calidad.`
+      }
     },
     {
       '@type': 'Question',
-      name: '¿Cuántas recámaras y baños tiene el modelo LIVET V.2?',
+      name: '¿Cuál es el precio o esquema de inversión para adquirir una casa en Lyrata?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: `El modelo LIVET V.2 cuenta con ${model.rooms.bedrooms} recámaras (incluida una recámara principal con vestidor y baño completo independiente), ${model.rooms.bathrooms} baños y cochera para ${model.rooms.parkingSpaces} autos.`,
-      },
+        text: `El modelo LIVET V.2 tiene un precio de ${model.price}. Ofrecemos una amplia gama de opciones de financiamiento atractivas, esquemas personalizados de enganche diferido y soporte total para créditos hipotecarios bancarios.`
+      }
     },
     {
       '@type': 'Question',
-      name: '¿Qué tecnología y equipamiento incluye la casa?',
+      name: '¿Qué amenidades exclusivas tiene la privada Lyrata?',
       acceptedAnswer: {
         '@type': 'Answer',
-        text: 'Incluye cerradura inteligente en puerta principal, calentador solar de 150 L, cisterna de 3,000 L con bomba, y preparación para minisplits, gas natural, internet y cargador de auto eléctrico.',
-      },
+        text: 'La privada cuenta con una Casa Club premium que incluye alberca climatizada de diseño exclusivo (oculta a la vista de la calle para tu privacidad), gimnasio equipado, espacio de co-working para trabajo remoto, parque para mascotas (pet-park) y cancha deportiva de básquetbol rodeada de áreas verdes.'
+      }
     },
-  ],
+    {
+      '@type': 'Question',
+      name: '¿Es un desarrollo seguro para mi familia?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Sí, Lyrata Edén Urbano cuenta con el más alto nivel de seguridad del mercado: accesos inteligentes controlados mediante tecnología de reconocimiento facial, una red integrada de 23 cámaras de circuito cerrado (CCTV), barda perimetral reforzada de hasta 4.60 metros de altura y cerco electrificado de alta potencia de 1,400 voltios.'
+      }
+    },
+    {
+      '@type': 'Question',
+      name: '¿El Modelo Livet V.2 está adaptado para mascotas y trabajo remoto?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Totalmente. El diseño inteligente incluye un área "Doggy" exclusiva debajo de las escaleras especialmente diseñada para mascotas, y una Zona Flex sumamente amplia en la planta alta, perfecta para home office o home school.'
+      }
+    },
+    {
+      '@type': 'Question',
+      name: '¿Por qué el entorno urbano de Lyrata ofrece una mejor calidad de vida frente a otros desarrollos?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'El entorno de Lyrata destaca por su diseño orgánico y sustentable que respeta e integra árboles maduros de gran formato (tales como flama china y trueno) para dar sombra inmediata. Además, sus fachadas están vestidas con materiales de bajo mantenimiento como cantera natural, que envejecen de manera hermosa con el tiempo.'
+      }
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cómo está diseñado el Modelo Livet V.2 para la vida moderna y la eficiencia?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Está diseñado con una separación inteligente entre las áreas sociales y el área de servicios, un cuarto de servicio techado e independiente, calentador solar integrado de alta capacidad (150 L) y con la preparación para conectar cargadores de autos eléctricos (EV Ready).'
+      }
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cómo facilita Synexia la conexión con este desarrollo?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'En Synexia no somos simples intermediarios transaccionales; brindamos un apoyo absoluto a lo largo de todo tu proceso de compra. Facilitamos una conexión transparente, directa y confiable con las opciones de inversión de mayor plusvalía, garantizando la máxima claridad y decisiones financieras inteligentes para tu patrimonio.'
+      }
+    }
+  ]
 };
 ---
 
