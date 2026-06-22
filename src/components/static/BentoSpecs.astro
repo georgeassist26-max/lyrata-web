@@ -33,27 +33,45 @@ const model = propertyData.models.find((m) => m.id === 'livet-v2')!;
   </div>
 
   <!-- Card 2: Dimensiones — 1 col square -->
-  <div class="md:col-span-1 bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col gap-5">
-    <div>
-      <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Terreno & Construcción</p>
-      <h3 class="text-xl font-semibold text-white">Dimensiones</h3>
+  <div class="md:col-span-1 bg-zinc-900 border border-white/10 rounded-3xl p-8 flex flex-col justify-between gap-5">
+    <div class="flex flex-col gap-5">
+      <div>
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-1">Terreno & Construcción</p>
+        <h3 class="text-xl font-semibold text-white">Dimensiones</h3>
+      </div>
+      <ul class="flex flex-col gap-4">
+        <li class="flex flex-col gap-1">
+          <span class="text-slate-500 text-xs uppercase tracking-widest">Lote</span>
+          <span class="text-white text-xl font-light">{model.dimensions.lotSize}</span>
+        </li>
+        <div class="w-full h-px bg-white/10"></div>
+        <li class="flex flex-col gap-1">
+          <span class="text-slate-500 text-xs uppercase tracking-widest">Terreno</span>
+          <span class="text-white text-xl font-light">{model.dimensions.landArea}</span>
+        </li>
+        <div class="w-full h-px bg-white/10"></div>
+        <li class="flex flex-col gap-1">
+          <span class="text-slate-500 text-xs uppercase tracking-widest">Construcción</span>
+          <span class="text-emerald-400 text-2xl font-light">{model.dimensions.constructionArea}</span>
+        </li>
+      </ul>
     </div>
-    <ul class="flex flex-col gap-5">
-      <li class="flex flex-col gap-1">
-        <span class="text-slate-500 text-xs uppercase tracking-widest">Lote</span>
-        <span class="text-white text-xl font-light">{model.dimensions.lotSize}</span>
-      </li>
-      <div class="w-full h-px bg-white/10"></div>
-      <li class="flex flex-col gap-1">
-        <span class="text-slate-500 text-xs uppercase tracking-widest">Terreno</span>
-        <span class="text-white text-xl font-light">{model.dimensions.landArea}</span>
-      </li>
-      <div class="w-full h-px bg-white/10"></div>
-      <li class="flex flex-col gap-1">
-        <span class="text-slate-500 text-xs uppercase tracking-widest">Construcción</span>
-        <span class="text-emerald-400 text-2xl font-light">{model.dimensions.constructionArea}</span>
-      </li>
-    </ul>
+    
+    <!-- Botón CTA "Revisa los Planos Aquí" -->
+    <div class="pt-4 border-t border-white/5">
+      <a
+        href="https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20conocer%20los%20planos%20arquitect%C3%B3nicos%20del%20modelo%20LIVET%20V.2"
+        target="_blank"
+        rel="noopener noreferrer"
+        onclick="if (typeof window.trackConversionLead === 'function') { window.trackConversionLead('Bento Specs: Planos Click'); }"
+        class="inline-flex items-center justify-center gap-2 w-full py-3 px-4 bg-emerald-400 hover:bg-emerald-500 active:scale-98 text-black text-sm font-semibold rounded-2xl shadow-lg transition-all duration-200"
+      >
+        <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Revisa los planos aquí
+      </a>
+    </div>
   </div>
 
   <!-- Card 3: Recámara Principal — 1 col, TALL (row-span-2) -->
