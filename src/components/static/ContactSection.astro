@@ -1,0 +1,67 @@
+---
+// ContactSection.astro
+// Static Ocean — sección de contacto; el formulario es la única isla (client:visible)
+import { config, hasWhatsApp, waHref, waTarget } from '../../lib/leads';
+import LeadForm from '../islands/LeadForm';
+---
+
+<section id="contacto" class="bg-zinc-950 border-t border-white/5 scroll-mt-16">
+  <div class="max-w-7xl mx-auto px-6 py-24">
+    <div class="grid md:grid-cols-2 gap-12 md:gap-20 items-center">
+
+      <!-- Columna izquierda: propuesta de valor -->
+      <div class="flex flex-col gap-6">
+        <div>
+          <p class="text-xs uppercase tracking-widest text-slate-500 mb-2">Da el primer paso</p>
+          <h2 class="text-3xl md:text-4xl font-light text-white tracking-tight">
+            Conoce tu próxima casa <span class="text-emerald-400">esta misma semana</span>
+          </h2>
+        </div>
+        <p class="text-slate-400 leading-relaxed max-w-md">
+          Déjanos tus datos y un asesor de {config.brandName} te contactará para
+          resolver tus dudas, enviarte los planos y agendar tu recorrido por
+          {config.siteName} — sin compromiso.
+        </p>
+        <ul class="flex flex-col gap-3">
+          <li class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-slate-300 text-sm">Respuesta el mismo día</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-slate-300 text-sm">Asesoría en créditos: bancario, INFONAVIT y contado</span>
+          </li>
+          <li class="flex items-center gap-3">
+            <svg class="w-4 h-4 text-emerald-400 shrink-0" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8.5L6.5 12L13 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="text-slate-300 text-sm">Recorridos presenciales y por videollamada</span>
+          </li>
+        </ul>
+        {hasWhatsApp && (
+          <a
+            href={waHref(config.whatsapp.scheduleMessage)}
+            {...waTarget()}
+            onclick="if (typeof window.trackConversionLead === 'function') { window.trackConversionLead('Contact Section WhatsApp Click'); }"
+            class="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 text-sm font-medium transition-colors"
+          >
+            ¿Prefieres escribirnos directo? Abre WhatsApp
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </a>
+        )}
+      </div>
+
+      <!-- Columna derecha: formulario (isla) -->
+      <div class="bg-zinc-900 border border-white/10 rounded-3xl p-8 md:p-10">
+        <LeadForm client:visible />
+      </div>
+
+    </div>
+  </div>
+</section>

@@ -1,0 +1,122 @@
+[
+  {
+    "id": "samara-v2",
+    "name": "SAMARA V.2",
+    "price": null,
+    "dimensions": {
+      "lotSize": null,
+      "landArea": null,
+      "constructionArea": null
+    },
+    "rooms": {
+      "bedrooms": null,
+      "bathrooms": null,
+      "parkingSpaces": null
+    },
+    "distribution": {
+      "groundFloor": null,
+      "upperFloor": null
+    },
+    "finishes": {
+      "floors": null,
+      "facade": null,
+      "bathrooms": null,
+      "kitchen": null
+    },
+    "equipmentAndInstallations": {
+      "water": null,
+      "preparations": null,
+      "smartHome": null
+    }
+  },
+  {
+    "id": "deus-v2",
+    "name": "DEUS V.2",
+    "price": null,
+    "dimensions": {
+      "lotSize": null,
+      "landArea": null,
+      "constructionArea": null
+    },
+    "rooms": {
+      "bedrooms": null,
+      "bathrooms": null,
+      "parkingSpaces": null
+    },
+    "distribution": {
+      "groundFloor": null,
+      "upperFloor": null
+    },
+    "finishes": {
+      "floors": null,
+      "facade": null,
+      "bathrooms": null,
+      "kitchen": null
+    },
+    "equipmentAndInstallations": {
+      "water": null,
+      "preparations": null,
+      "smartHome": null
+    }
+  },
+  {
+    "id": "zentia-v1",
+    "name": "ZENTIA V.1",
+    "price": null,
+    "dimensions": {
+      "lotSize": null,
+      "landArea": null,
+      "constructionArea": null
+    },
+    "rooms": {
+      "bedrooms": null,
+      "bathrooms": null,
+      "parkingSpaces": null
+    },
+    "distribution": {
+      "groundFloor": null,
+      "upperFloor": null
+    },
+    "finishes": {
+      "floors": null,
+      "facade": null,
+      "bathrooms": null,
+      "kitchen": null
+    },
+    "equipmentAndInstallations": {
+      "water": null,
+      "preparations": null,
+      "smartHome": null
+    }
+  },
+  {
+    "id": "livet-roof-v2",
+    "name": "LIVET CON ROOF V.2",
+    "price": null,
+    "dimensions": {
+      "lotSize": null,
+      "landArea": null,
+      "constructionArea": null
+    },
+    "rooms": {
+      "bedrooms": null,
+      "bathrooms": null,
+      "parkingSpaces": null
+    },
+    "distribution": {
+      "groundFloor": null,
+      "upperFloor": null
+    },
+    "finishes": {
+      "floors": null,
+      "facade": null,
+      "bathrooms": null,
+      "kitchen": null
+    },
+    "equipmentAndInstallations": {
+      "water": null,
+      "preparations": null,
+      "smartHome": null
+    }
+  }
+]

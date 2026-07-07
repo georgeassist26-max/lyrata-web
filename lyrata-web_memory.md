@@ -1,5 +1,15 @@
 # Memoria del Proyecto: Lyrata Edén Urbano
 
+> ⚠️ **2026-07-07 — Migrado a `~/.openclaw/workspace/landing-factory/sites/lyrata` (canónico a futuro).**
+> Este directorio queda como standalone de referencia (build verde, hardening de leads aplicado)
+> hasta que Emilio confirme el cutover. Operar cambios nuevos en la fábrica. Ver `landing-factory/FACTORY.md`.
+> Sesión 2026-07-07 (Claude Fable 5): config central `src/config/site.config.json` (WhatsApp/analytics/webhook
+> vacíos = apagados), tracking reescrito (antes crasheaba con ReferenceError en cada clic), atribución UTM
+> (localStorage `lead_attr` + línea `Ref:` en mensajes de WhatsApp), CTA primario en Hero, `ContactSection`
+> + `LeadForm` (webhook→WhatsApp→mailto), reviews fabricados FUERA del JSON-LD, `DEPLOY.md`.
+> Research: `docs/market-research-2026-07.md` · Modelos PDF: `docs/extracted-models/` (SIN datos de otros
+> modelos — pedir fichas a Synexia; confirmar modelo "MANTRA" y 52 vs 23 cámaras).
+
 ## Objetivo Principal
 - Landing Page de ultra-alta conversión para venta de casas residenciales nuevas en León, Guanajuato
 - Stack: Astro + Tailwind CSS v4 + React | Arquitectura Híbrida Jamstack Edge

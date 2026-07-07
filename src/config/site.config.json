@@ -1,0 +1,28 @@
+{
+  "$comment": "FUENTE ÚNICA de configuración del sitio. Campos vacíos = función desactivada (no se inyecta ningún script ni enlace roto). Rellenar y hacer build.",
+  "siteId": "lyrata",
+  "siteName": "Lyrata Edén Urbano",
+  "brandName": "Synexia Bienes Raíces",
+  "siteUrl": "https://synexia.mx",
+  "activeModelId": "livet-v2",
+  "whatsapp": {
+    "$comment": "Número en formato internacional SIN '+' ni espacios, ej. 5214771234567. Vacío = los CTAs apuntan al formulario #contacto.",
+    "number": "",
+    "scheduleMessage": "Hola, me interesa agendar un recorrido para conocer el modelo LIVET V.2",
+    "plansMessage": "Hola, me interesa conocer los planos arquitectónicos del modelo LIVET V.2"
+  },
+  "leadWebhook": "",
+  "fallbackEmail": "emilio.gs98@gmail.com",
+  "leadValue": 3370000,
+  "currency": "MXN",
+  "analytics": {
+    "$comment": "IDs reales de cada plataforma. Vacío = ese script NO se carga (cero peso, cero errores).",
+    "ga4": "",
+    "metaPixel": "",
+    "googleAdsSendTo": "",
+    "hotjar": "",
+    "linkedinPartnerId": "",
+    "linkedinConversionId": "",
+    "mixpanelToken": ""
+  }
+}

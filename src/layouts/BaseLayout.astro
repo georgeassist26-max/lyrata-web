@@ -1,5 +1,7 @@
 ---
 import propertyData from '../content/propertyData.json';
+import siteConfig from '../config/site.config.json';
+import { hasWhatsApp } from '../lib/leads';
 import '../styles/global.css';
 
 export interface Props {
@@ -15,18 +17,23 @@ const {
 } = Astro.props;
 
 // Canonical site origin. Override via PUBLIC_SITE_URL env at build time when domain is final.
-const SITE_URL = (import.meta.env.PUBLIC_SITE_URL ?? 'https://synexia.mx').replace(/\/$/, '');
+const SITE_URL = (import.meta.env.PUBLIC_SITE_URL ?? siteConfig.siteUrl).replace(/\/$/, '');
 const canonical = new URL(Astro.url.pathname, SITE_URL).href;
 const ogImageUrl = new URL(ogImage, SITE_URL).href;
 
 // Extract development and model data
 const development = propertyData.development;
-const model = propertyData.models.find((m) => m.id === 'livet-v2')!;
+const model = propertyData.models.find((m) => m.id === siteConfig.activeModelId)!;
 
 // CRITICAL: Strip "$", ",", and " MXN" → raw integer (e.g. "$3,370,000 MXN" → 3370000)
 const rawPrice = parseInt(model.price.replace(/[$,]/g, '').replace(' MXN', '').trim(), 10);
 
+// Analytics: cada vendor se inyecta SOLO si su ID está configurado en site.config.json
+const A = siteConfig.analytics;
+
 // Build schema.org SingleFamilyResidence
+// Nota: sin aggregateRating/review — solo datos verificables (los reviews fabricados
+// violan las políticas de datos estructurados de Google y arriesgan penalización).
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'SingleFamilyResidence',
@@ -71,10 +78,10 @@ const schema = {
     url: canonical,
     seller: {
       '@type': 'RealEstateAgent',
-      name: 'Synexia Bienes Raíces',
+      name: siteConfig.brandName,
       image: `${SITE_URL}/synexia-logo-transparent.png`,
       priceRange: '$$$',
-      telephone: '+521XXXXXXXXXX',
+      ...(hasWhatsApp ? { telephone: `+${siteConfig.whatsapp.number}` } : {}),
       address: {
         '@type': 'PostalAddress',
         addressLocality: 'León',
@@ -95,30 +102,6 @@ const schema = {
     { '@type': 'LocationFeatureSpecification', name: 'Área Doggy debajo de escaleras', value: true },
     { '@type': 'LocationFeatureSpecification', name: 'Preparación para auto eléctrico', value: true }
   ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    bestRating: '5',
-    worstRating: '1',
-    ratingCount: '48',
-    reviewCount: '12'
-  },
-  review: [
-    {
-      '@type': 'Review',
-      author: { '@type': 'Person', name: 'Alejandro Torres' },
-      datePublished: '2026-04-12',
-      reviewBody: 'El modelo LIVET V.2 superó nuestras expectativas. La distribución de la zona flex y el balcón privado hacen una gran diferencia para home office.',
-      reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' }
-    },
-    {
-      '@type': 'Review',
-      author: { '@type': 'Person', name: 'Mariana G. Ruiz' },
-      datePublished: '2026-05-18',
-      reviewBody: 'Excelente atención de Synexia. La seguridad de la privada con reconocimiento facial nos dio total tranquilidad para mudarnos.',
-      reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' }
-    }
-  ]
 };
 
 // AEO: FAQPage schema — what answer engines (ChatGPT, Perplexity, Google AI) quote directly.
@@ -200,6 +183,19 @@ const faqSchema = {
     }
   ]
 };
+
+// Valores que consumen los scripts inline de tracking
+const trackingVars = {
+  SITE_ID: siteConfig.siteId,
+  SITE_NAME: siteConfig.siteName,
+  MODEL_ID: model.id,
+  MODEL_NAME: model.name,
+  LEAD_VALUE: siteConfig.leadValue,
+  CURRENCY: siteConfig.currency,
+  ADS_SEND_TO: A.googleAdsSendTo,
+  LI_CONVERSION_ID: A.linkedinConversionId,
+  LEAD_WEBHOOK: siteConfig.leadWebhook,
+};
 ---
 
 <!doctype html>
@@ -223,7 +219,7 @@ const faqSchema = {
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="es_MX" />
-    <meta property="og:site_name" content="Synexia Bienes Raíces" />
+    <meta property="og:site_name" content={siteConfig.brandName} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -240,127 +236,194 @@ const faqSchema = {
     <script type="application/ld+json" set:html={JSON.stringify(schema)} is:inline />
     <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} is:inline />
 
-    <!-- Google Analytics 4 (GA4) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX" is:inline></script>
-    <script id="ga4-init" is:inline>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XXXXXXXXXX');
+    <!-- ══════════ ATRIBUCIÓN: captura UTM/gclid/fbclid (first-touch en localStorage) ══════════ -->
+    <script is:inline>
+      (function () {
+        var EMPTY = {};
+        try {
+          var KEY = 'lead_attr';
+          var params = new URLSearchParams(location.search);
+          var KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'gclid', 'fbclid'];
+          var found = {}, has = false;
+          KEYS.forEach(function (k) { var v = params.get(k); if (v) { found[k] = v.slice(0, 120); has = true; } });
+          var stored = null;
+          try { stored = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+          if (!stored) {
+            stored = { ts: new Date().toISOString(), landing: location.pathname, referrer: document.referrer.slice(0, 200) };
+            KEYS.forEach(function (k) { if (found[k]) stored[k] = found[k]; });
+            try { localStorage.setItem(KEY, JSON.stringify(stored)); } catch (e) {}
+          } else if (has) {
+            // Conserva first-touch; registra el último touch de campaña aparte
+            stored.last = { ts: new Date().toISOString() };
+            KEYS.forEach(function (k) { if (found[k]) stored.last[k] = found[k]; });
+            try { localStorage.setItem(KEY, JSON.stringify(stored)); } catch (e) {}
+          }
+          window.getLeadAttribution = function () { return stored || EMPTY; };
+        } catch (e) {
+          window.getLeadAttribution = function () { return EMPTY; };
+        }
+      })();
     </script>
 
-    <!-- Facebook Pixel Code -->
-    <script id="fb-pixel" is:inline>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', 'XXXXXXXXXXXXXXX');
-      fbq('track', 'PageView');
-    </script>
-    <noscript>
-      <img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=XXXXXXXXXXXXXXX&ev=PageView&noscript=1" />
-    </noscript>
+    {A.ga4 && (
+      <>
+        <!-- Google Analytics 4 -->
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${A.ga4}`} is:inline></script>
+        <script is:inline define:vars={{ GA4_ID: A.ga4 }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          window.gtag = gtag;
+          gtag('js', new Date());
+          gtag('config', GA4_ID);
+        </script>
+      </>
+    )}
 
-    <!-- Hotjar Tracking Code -->
-    <script id="hotjar-init" is:inline>
-      (function(h,o,t,j,a,r){
-        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
-        h._hjSettings={hjid:XXXXXXXX,hjsv:6};
-        a=o.getElementsByTagName('head')[0];
-        r=o.createElement('script');r.async=1;
-        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
-        a.appendChild(r);
-      })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
-    </script>
+    {A.metaPixel && (
+      <>
+        <!-- Meta (Facebook) Pixel -->
+        <script is:inline define:vars={{ PIXEL_ID: A.metaPixel }}>
+          !function(f,b,e,v,n,t,s)
+          {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+          n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+          if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+          n.queue=[];t=b.createElement(e);t.async=!0;
+          t.src=v;s=b.getElementsByTagName(e)[0];
+          s.parentNode.insertBefore(t,s)}(window, document,'script',
+          'https://connect.facebook.net/en_US/fbevents.js');
+          fbq('init', PIXEL_ID);
+          fbq('track', 'PageView');
+        </script>
+      </>
+    )}
 
-    <!-- LinkedIn Insight Tag -->
-    <script id="linkedin-insight" is:inline>
-      _linkedin_partner_id = "XXXXXXXX";
-      window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
-      window._linkedin_data_partner_ids.push(_linkedin_partner_id);
-    </script>
-    <script id="linkedin-insight-init" is:inline>
-      (function(l) {
-        if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
-        window.lintrk.q=[]}
-        var s = document.getElementsByTagName("script")[0];
-        var b = document.createElement("script");
-        b.type = "text/javascript";b.async = true;
-        b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
-        s.parentNode.insertBefore(b, s);
-      })(window.lintrk);
-    </script>
-    <noscript>
-      <img height="1" width="1" style="display:none;" alt="" src="https://px.ads.linkedin.com/collect/?pid=XXXXXXXX&fmt=gif" />
-    </noscript>
+    {A.hotjar && (
+      <script is:inline define:vars={{ HJID: A.hotjar }}>
+        (function(h,o,t,j,a,r){
+          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+          h._hjSettings={hjid:Number(HJID),hjsv:6};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+        })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+      </script>
+    )}
 
-    <!-- Mixpanel SDK & Tracking Setup -->
-    <script id="mixpanel-init" is:inline>
-      (function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
-      for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
-      mixpanel.init("XXXXXXXXXXXXXX", {batch_requests:true});
-      mixpanel.track("Page View: Lyrata Landing");
-    </script>
+    {A.linkedinPartnerId && (
+      <script is:inline define:vars={{ LI_PID: A.linkedinPartnerId }}>
+        window._linkedin_partner_id = LI_PID;
+        window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];
+        window._linkedin_data_partner_ids.push(LI_PID);
+        (function(l) {
+          if (!l){window.lintrk = function(a,b){window.lintrk.q.push([a,b])};
+          window.lintrk.q=[]}
+          var s = document.getElementsByTagName("script")[0];
+          var b = document.createElement("script");
+          b.type = "text/javascript";b.async = true;
+          b.src = "https://snap.licdn.com/li.lms-analytics/insight.min.js";
+          s.parentNode.insertBefore(b, s);
+        })(window.lintrk);
+      </script>
+    )}
 
-    <!-- Unified Custom Tracking Script for Conversion Actions -->
-    <script id="unified-tracking-events" is:inline>
-      // Global tracking helper to trigger standard lead events across channels
-      window.trackConversionLead = function(actionName, payload = {}) {
-        const metadata = {
-          development: "Lyrata Eden Urbano",
-          model: "LIVET V.2",
+    {A.mixpanelToken && (
+      <script is:inline define:vars={{ MP_TOKEN: A.mixpanelToken, MP_PAGE: `Page View: ${siteConfig.siteName}` }}>
+        (function(f,b){if(!b.__SV){var a,e,i,g;window.mixpanel=b;b._i=[];b.init=function(a,e,d){function f(b,h){var a=h.split(".");2==a.length&&(b=b[a[0]],h=a[1]);b[h]=function(){b.push([h].concat(Array.prototype.slice.call(arguments,0)))}}var c=b;"undefined"!==typeof d?c=b[d]=[]:d="mixpanel";c.people=c.people||[];c.toString=function(b){var a="mixpanel";"mixpanel"!==d&&(a+="."+d);b||(a+=" (stub)");return a};c.people.toString=function(){return c.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms register register_once alias unregister identify name_tag set_config reset people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user".split(" ");
+        for(g=0;g<i.length;g++)f(c,i[g]);b._i.push([a,e,d])};b.__SV=1.2;a=f.createElement("script");a.type="text/javascript";a.async=!0;a.src="undefined"!==typeof MIXPANEL_CUSTOM_LIB_URL?MIXPANEL_CUSTOM_LIB_URL:"file:"===f.location.protocol&&"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js".match(/^\/\//)?"https://cdn.mxpnl.com/libs/mixpanel-2-latest.min.js":"//cdn.mxpnl.com/libs/mixpanel-2-latest.min.js";e=f.getElementsByTagName("script")[0];e.parentNode.insertBefore(a,e)}})(document,window.mixpanel||[]);
+        mixpanel.init(MP_TOKEN, {batch_requests:true});
+        mixpanel.track(MP_PAGE);
+      </script>
+    )}
+
+    <!-- ══════════ EVENTO UNIFICADO DE CONVERSIÓN ══════════
+         Cada vendor va en su propio try/catch: un fallo nunca rompe la cadena. -->
+    <script is:inline define:vars={trackingVars}>
+      window.trackConversionLead = function (actionName, payload) {
+        payload = payload || {};
+        var attribution = (window.getLeadAttribution && window.getLeadAttribution()) || {};
+        var metadata = {
+          site: SITE_ID,
+          development: SITE_NAME,
+          model: MODEL_NAME,
           action: actionName,
+          page: location.pathname,
           timestamp: new Date().toISOString(),
-          ...payload
+          attribution: attribution,
         };
+        for (var k in payload) metadata[k] = payload[k];
 
-        console.log(`[Unified Tracking] Lead Conversion Event: ${actionName}`, metadata);
-
-        // 1. Google Analytics 4 Event (Lead)
+        // 1. Google Analytics 4 (+ Google Ads conversion si está configurado)
         if (typeof gtag === 'function') {
-          gtag('event', 'generate_lead', {
-            'event_category': 'Engagement',
-            'event_label': actionName,
-            'value': 3370000,
-            'currency': 'MXN',
-            ...metadata
-          });
-          // Google Ads Conversion Tag (Leads Trigger)
-          gtag('event', 'conversion', {
-            'send_to': 'AW-XXXXXXXXXXX/YYYYYYYYYYYYYYYYYYY',
-            'value': 3370000,
-            'currency': 'MXN'
-          });
+          try {
+            gtag('event', 'generate_lead', {
+              event_category: 'Engagement',
+              event_label: actionName,
+              value: LEAD_VALUE,
+              currency: CURRENCY,
+            });
+            if (ADS_SEND_TO) {
+              gtag('event', 'conversion', { send_to: ADS_SEND_TO, value: LEAD_VALUE, currency: CURRENCY });
+            }
+          } catch (e) {}
         }
 
-        // 2. Facebook Pixel Lead Event
+        // 2. Meta Pixel Lead
         if (typeof fbq === 'function') {
-          fbq('track', 'Lead', {
-            content_name: 'Lyrata Eden Urbano - LIVET V.2',
-            content_category: 'Property Lead',
-            value: 3370000,
-            currency: 'MXN',
-            content_ids: ['livet-v2'],
-            content_type: 'product',
-            ...metadata
-          });
+          try {
+            fbq('track', 'Lead', {
+              content_name: SITE_NAME + ' - ' + MODEL_NAME,
+              content_category: 'Property Lead',
+              value: LEAD_VALUE,
+              currency: CURRENCY,
+              content_ids: [MODEL_ID],
+              content_type: 'product',
+            });
+          } catch (e) {}
         }
 
-        // 3. LinkedIn Insight Conversion Event
-        if (typeof lintrk === 'function') {
-          lintrk('track', { conversion_id: XXXXXXX });
+        // 3. LinkedIn Insight
+        if (LI_CONVERSION_ID && typeof lintrk === 'function') {
+          try { lintrk('track', { conversion_id: Number(LI_CONVERSION_ID) }); } catch (e) {}
         }
 
-        // 4. Mixpanel Track Lead
+        // 4. Mixpanel
         if (typeof mixpanel === 'object' && mixpanel.track) {
-          mixpanel.track("Lead Conversion", metadata);
+          try { mixpanel.track('Lead Conversion', metadata); } catch (e) {}
+        }
+
+        // 5. Webhook propio (pipeline de leads / OpenClaw) — sobrevive a la navegación con sendBeacon
+        if (LEAD_WEBHOOK) {
+          try {
+            var body = JSON.stringify({ type: 'event', event: actionName, data: metadata });
+            if (navigator.sendBeacon) {
+              navigator.sendBeacon(LEAD_WEBHOOK, new Blob([body], { type: 'application/json' }));
+            } else {
+              fetch(LEAD_WEBHOOK, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: body, keepalive: true });
+            }
+          } catch (e) {}
         }
       };
+
+      // Atribución → WhatsApp: al hacer clic en cualquier enlace wa.me se añade una línea
+      // "Ref: sitio|fuente|campaña" al mensaje prellenado, para que el asesor (o la IA)
+      // sepa de qué campaña llegó el lead sin necesidad de backend.
+      document.addEventListener('click', function (ev) {
+        var a = ev.target && ev.target.closest ? ev.target.closest('a[href^="https://wa.me/"]') : null;
+        if (!a) return;
+        try {
+          var attr = (window.getLeadAttribution && window.getLeadAttribution()) || {};
+          var last = attr.last || {};
+          var source = last.utm_source || attr.utm_source || (attr.referrer ? 'referral' : 'directo');
+          var campaign = last.utm_campaign || attr.utm_campaign || '';
+          var url = new URL(a.href);
+          var text = url.searchParams.get('text') || '';
+          if (text.indexOf('Ref: ') === -1) {
+            url.searchParams.set('text', text + '\n\nRef: ' + SITE_ID + '|' + source + (campaign ? '|' + campaign : ''));
+            a.href = url.toString();
+          }
+        } catch (e) {}
+      }, true);
     </script>
   </head>
   <body class="bg-black text-slate-200 font-sans antialiased">
@@ -368,9 +431,9 @@ const faqSchema = {
     <header class="absolute top-0 left-0 w-full z-50 pointer-events-none">
       <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-center">
         <div class="flex items-center gap-2.5 pointer-events-auto mx-auto">
-          <img 
-            src="/synexia-logo-transparent.png" 
-            alt="Synexia Bienes Raíces" 
+          <img
+            src="/synexia-logo-transparent.png"
+            alt="Synexia Bienes Raíces"
             width="171"
             height="120"
             decoding="async"

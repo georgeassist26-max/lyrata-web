@@ -1,10 +1,15 @@
 // LeadWidget.tsx
-// Active Island — Premium floating CTA → WhatsApp
+// Active Island — Premium floating CTA → WhatsApp (o formulario #contacto si aún no hay número)
 // Hydration: client:load
+import siteConfig from '../../config/site.config.json';
+
+const hasWhatsApp = Boolean(siteConfig.whatsapp.number);
+const whatsappUrl = hasWhatsApp
+  ? `https://wa.me/${siteConfig.whatsapp.number}?text=${encodeURIComponent(siteConfig.whatsapp.scheduleMessage)}`
+  : '#contacto';
+const externalProps = hasWhatsApp ? { target: '_blank', rel: 'noopener noreferrer' } : {};
 
 export default function LeadWidget() {
-  const whatsappUrl = "https://wa.me/521XXXXXXXXXX?text=Hola,%20me%20interesa%20agendar%20un%20recorrido%20para%20conocer%20el%20modelo%20LIVET%20V.2";
-
   const handleWhatsAppClick = (actionName: string) => {
     // Trigger our unified analytics event handler defined globally in BaseLayout
     if (typeof (window as any).trackConversionLead === 'function') {
@@ -14,12 +19,11 @@ export default function LeadWidget() {
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3.5 select-none pointer-events-none">
-      
+
       {/* Botón Call to Action de Whatsapp Directo */}
       <a
         href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...externalProps}
         onClick={() => handleWhatsAppClick("WhatsApp Floating Widget Click")}
         className="pointer-events-auto flex items-center justify-center w-12 h-12 rounded-full bg-[#25D366] text-white shadow-2xl hover:scale-110 hover:rotate-12 transition-transform duration-200"
         title="Enviar WhatsApp"
@@ -36,8 +40,7 @@ export default function LeadWidget() {
       {/* Botón Agendar tu Recorrido */}
       <a
         href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
+        {...externalProps}
         onClick={() => handleWhatsAppClick("WhatsApp Calendar Agenda Click")}
         className="pointer-events-auto flex items-center gap-2 bg-white text-black rounded-full px-6 py-3 font-medium shadow-2xl hover:scale-105 transition-transform duration-200"
       >
