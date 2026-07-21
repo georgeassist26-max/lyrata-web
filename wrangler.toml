@@ -1,0 +1,9 @@
+# Cloudflare deploy config — sitio 100% estático servido como Worker de assets.
+# El build (npm run build) genera ./dist; `wrangler deploy` lo publica.
+name = "lyrata"
+compatibility_date = "2026-07-21"
+
+[assets]
+directory = "./dist"
+# Sitio multipágina (no SPA): cada ruta sirve su propio index.html; 404 → página 404.
+not_found_handling = "404-page"
