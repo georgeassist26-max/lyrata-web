@@ -6,8 +6,8 @@
   "siteUrl": "https://synexia.mx",
   "activeModelId": "livet-v2",
   "whatsapp": {
-    "$comment": "Número en formato internacional SIN '+' ni espacios, ej. 5214771234567. Vacío = los CTAs apuntan al formulario #contacto.",
-    "number": "",
+    "$comment": "Número internacional SIN '+' ni espacios (E.164; MX = 52 + 10 dígitos). Vacío = CTAs → formulario #contacto. Requiere WhatsApp activo en el número.",
+    "number": "525649660253",
     "scheduleMessage": "Hola, me interesa agendar un recorrido para conocer el modelo LIVET V.2",
     "plansMessage": "Hola, me interesa conocer los planos arquitectónicos del modelo LIVET V.2"
   },
