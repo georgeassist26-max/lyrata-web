@@ -11,20 +11,48 @@ import ContactSection from '../components/static/ContactSection.astro';
 import FaqSection from '../components/static/FaqSection.astro';
 import AmenitiesIsland from '../components/islands/AmenitiesIsland';
 import LeadWidget from '../components/islands/LeadWidget';
+import { config, waHref, waTarget } from '../lib/leads';
+
+const scheduleHref = waHref(config.whatsapp.scheduleMessage);
 ---
 
-<BaseLayout title="Modelo LIVET V.2 | Lyrata Edén Urbano">
+<BaseLayout
+  title="LIVET V.2 — Casa en venta en León Norte | Lyrata Edén Urbano"
+  description="Casa nueva de 3 recámaras en venta en la zona norte de León, Gto. Modelo LIVET V.2: $3,370,000 MXN, 187.65 m², privada con acceso por reconocimiento facial. Agenda tu recorrido."
+>
   <Hero />
   <div class="sticky top-0 z-40 backdrop-blur-md bg-black/80">
     <ModelSelector activeId="livet-v2" />
   </div>
   <section class="bg-black">
     <div class="max-w-7xl mx-auto px-4 py-24">
+      <div class="mb-12">
+        <p class="text-xs uppercase tracking-widest text-slate-500 mb-2 text-center">Ficha técnica</p>
+        <h2 class="text-3xl md:text-4xl font-light text-white text-center">
+          Distribución, dimensiones y acabados de la casa LIVET V.2
+        </h2>
+      </div>
       <BentoSpecs />
     </div>
   </section>
-  <NatureSection />
+
+  <!-- Seguridad elevada: es el driver #1 de compra en León -->
   <SecuritySection />
+  <div class="bg-zinc-950 pb-24 -mt-8 flex justify-center">
+    <a
+      href={scheduleHref}
+      {...waTarget()}
+      onclick="if (typeof window.trackConversionLead === 'function') { window.trackConversionLead('Security Section CTA Click'); }"
+      class="inline-flex items-center justify-center gap-2 px-8 py-3.5 border border-emerald-400/50 hover:border-emerald-400 text-emerald-400 hover:text-emerald-300 text-sm font-medium rounded-full transition-colors duration-200"
+    >
+      Compruébalo en persona — agenda tu recorrido
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+      </svg>
+    </a>
+  </div>
+
+  <NatureSection />
   <AmenitiesIsland client:visible />
   <InteriorsSection />
   <AboutSection />

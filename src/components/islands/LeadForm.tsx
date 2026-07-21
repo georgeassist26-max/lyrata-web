@@ -7,7 +7,7 @@
 import { useState } from 'react';
 import siteConfig from '../../config/site.config.json';
 
-type Status = 'idle' | 'sending' | 'done' | 'error';
+type Status = 'idle' | 'sending' | 'done' | 'mailto' | 'error';
 
 const BUY_MODES = [
   'Crédito bancario',
@@ -92,19 +92,22 @@ export default function LeadForm() {
       return;
     }
 
-    // Ruta 3: mailto de respaldo
+    // Ruta 3: mailto de respaldo. NO afirmamos "recibimos tus datos" — la entrega depende de
+    // que el visitante tenga cliente de correo Y pulse "enviar". Estado honesto e intermedio.
     if (siteConfig.fallbackEmail) {
       const subject = `Nuevo lead ${siteConfig.siteName} — ${lead.name}`;
       const body =
         `Nombre: ${lead.name}\nTeléfono: ${lead.phone}\nForma de compra: ${lead.buyMode}\n` +
         `Modelo: ${lead.model}\nAtribución: ${JSON.stringify(lead.attribution)}\nFecha: ${lead.timestamp}`;
       window.location.href = `mailto:${siteConfig.fallbackEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      setStatus('done');
+      setStatus('mailto');
       return;
     }
 
     setStatus('error');
   };
+
+  const hasWhatsApp = Boolean(siteConfig.whatsapp.number);
 
   if (status === 'done') {
     return (
@@ -118,6 +121,33 @@ export default function LeadForm() {
         <p className="text-slate-400 text-sm max-w-xs">
           Recibimos tus datos. Un asesor de {siteConfig.brandName} te contactará hoy mismo.
         </p>
+      </div>
+    );
+  }
+
+  if (status === 'mailto') {
+    return (
+      <div className="flex flex-col items-center text-center gap-3 py-10">
+        <div className="w-14 h-14 rounded-full bg-amber-400/15 border border-amber-400/40 flex items-center justify-center">
+          <svg className="w-7 h-7 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+          </svg>
+        </div>
+        <p className="text-white text-xl font-medium">Casi listo, {name.split(' ')[0] || ''}</p>
+        <p className="text-slate-400 text-sm max-w-xs">
+          Se abrió tu app de correo con tus datos — <strong className="text-slate-200">pulsa “Enviar”</strong> para
+          que un asesor de {siteConfig.brandName} te contacte.
+        </p>
+        {hasWhatsApp && (
+          <a
+            href={`https://wa.me/${siteConfig.whatsapp.number}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 text-emerald-400 hover:text-emerald-300 text-sm font-medium"
+          >
+            ¿No se abrió? Escríbenos por WhatsApp
+          </a>
+        )}
       </div>
     );
   }
@@ -201,12 +231,32 @@ export default function LeadForm() {
 
       {status === 'error' && (
         <p className="text-red-400 text-sm text-center">
-          No pudimos enviar tus datos. Escríbenos por WhatsApp con el botón flotante.
+          {hasWhatsApp ? (
+            <>
+              No pudimos enviar tus datos.{' '}
+              <a
+                href={`https://wa.me/${siteConfig.whatsapp.number}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline text-emerald-400"
+              >
+                Escríbenos por WhatsApp
+              </a>
+              .
+            </>
+          ) : (
+            'No pudimos enviar tus datos. Por favor inténtalo de nuevo en un momento.'
+          )}
         </p>
       )}
 
       <p className="text-slate-600 text-xs text-center leading-relaxed">
-        Tus datos solo se usan para darte información de este desarrollo. Sin spam.
+        Al enviar aceptas que {siteConfig.brandName} use tu nombre y teléfono para contactarte sobre
+        este desarrollo. Sin spam. Consulta nuestro{' '}
+        <a href="/aviso-de-privacidad" className="underline hover:text-slate-400">
+          Aviso de Privacidad
+        </a>
+        .
       </p>
     </form>
   );

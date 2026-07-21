@@ -25,8 +25,8 @@ const ctaHref = waHref(config.whatsapp.scheduleMessage);
       <img
         src="/3-houses-front.webp"
         alt="Vista frontal de tres casas modelo LIVET V.2 en Lyrata Edén Urbano, León, Guanajuato"
-        width="1600"
-        height="1059"
+        width="1257"
+        height="832"
         fetchpriority="high"
         decoding="async"
         class="object-cover object-center w-full h-full"
@@ -66,8 +66,19 @@ const ctaHref = waHref(config.whatsapp.scheduleMessage);
         </h1>
 
         <!-- Price accent -->
-        <p class="text-2xl md:text-3xl font-medium text-emerald-400 mt-4 mb-10">
+        <p class="text-2xl md:text-3xl font-medium text-emerald-400 mt-4 mb-2">
           {model.price}
+        </p>
+
+        <!-- Nota de precio: $/m² vs promedio de mercado (dato factual) -->
+        <p class="text-xs md:text-sm text-slate-300 mb-3">
+          $17,960 por m² — alrededor de 9% por debajo del promedio de casas nuevas en León.
+        </p>
+
+        <!-- Refuerzo: ubicación + seguridad (driver #1 en León) -->
+        <p class="text-sm md:text-base text-slate-200/90 max-w-xl mb-10 leading-relaxed">
+          Zona norte de León, Gto. · Seguridad de otro nivel: acceso con reconocimiento facial,
+          más de 50 cámaras de CCTV y cerco electrificado de 1,400 V.
         </p>
 
         <!-- Metric badges -->

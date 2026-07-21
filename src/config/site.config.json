@@ -15,6 +15,13 @@
   "fallbackEmail": "emilio.gs98@gmail.com",
   "leadValue": 3370000,
   "currency": "MXN",
+  "legal": {
+    "$comment": "Aviso de privacidad (LFPDPPP). responsibleLegalName y responsibleAddress son OBLIGATORIOS antes de publicar — mientras estén vacíos, la página muestra un aviso de PENDIENTE y NO debe salir a producción.",
+    "responsibleLegalName": "",
+    "responsibleAddress": "",
+    "privacyEmail": "emilio.gs98@gmail.com",
+    "privacyUpdated": "2026-07-09"
+  },
   "analytics": {
     "$comment": "IDs reales de cada plataforma. Vacío = ese script NO se carga (cero peso, cero errores).",
     "ga4": "",

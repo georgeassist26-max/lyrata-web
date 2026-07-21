@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../config/site.config.json';
+
+const legal = (siteConfig as any).legal ?? {};
+const responsible = legal.responsibleLegalName?.trim() || siteConfig.brandName;
+const address = legal.responsibleAddress?.trim() || '';
+const email = legal.privacyEmail?.trim() || siteConfig.fallbackEmail;
+const updated = legal.privacyUpdated?.trim() || '';
+const incomplete = !legal.responsibleLegalName?.trim() || !legal.responsibleAddress?.trim();
+---
+
+<BaseLayout
+  title={`Aviso de Privacidad | ${siteConfig.siteName}`}
+  description={`Aviso de privacidad de ${siteConfig.siteName} conforme a la LFPDPPP: qué datos recabamos, para qué, cómo se resguardan y cómo ejercer tus derechos ARCO.`}
+>
+  <section class="bg-black min-h-screen">
+    <article class="max-w-3xl mx-auto px-6 py-24 md:py-32">
+
+      <a href="/" class="inline-flex items-center gap-2 text-slate-400 hover:text-white text-sm mb-10 transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+        </svg>
+        Volver al inicio
+      </a>
+
+      <p class="text-xs uppercase tracking-widest text-slate-500 mb-3">Legal</p>
+      <h1 class="text-4xl md:text-5xl font-light text-white mb-4">Aviso de Privacidad</h1>
+      <p class="text-slate-400 mb-12">
+        {siteConfig.siteName}{updated && <> · Última actualización: {updated}</>}
+      </p>
+
+      {incomplete && (
+        <div class="mb-12 rounded-2xl border border-amber-400/40 bg-amber-400/10 p-5 text-amber-200 text-sm leading-relaxed">
+          <strong>Borrador — no publicar aún.</strong> Faltan la razón social y/o el domicilio
+          del responsable (campos <code>legal.responsibleLegalName</code> y
+          <code>legal.responsibleAddress</code> en <code>site.config.json</code>). El aviso no es
+          legalmente válido hasta completarlos.
+        </div>
+      )}
+
+      <div class="flex flex-col gap-8 text-slate-300 leading-relaxed">
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">1. Responsable del tratamiento de tus datos</h2>
+          <p>
+            {incomplete ? (
+              <span class="text-amber-300">[PENDIENTE: razón social del responsable]</span>
+            ) : (
+              <strong class="text-white">{responsible}</strong>
+            )}
+            {' '}es responsable del uso y protección de tus datos personales, conforme a la Ley
+            Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP).
+            {address
+              ? <> Con domicilio en {address}.</>
+              : <> <span class="text-amber-300">[PENDIENTE: domicilio del responsable]</span></>}
+            {' '}Para cualquier tema relacionado con tus datos, puedes escribir a
+            <a href={`mailto:${email}`} class="text-emerald-400 hover:text-emerald-300"> {email}</a>.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">2. Datos personales que recabamos</h2>
+          <p>
+            Recabamos únicamente los datos que nos proporcionas de forma directa a través del
+            formulario de contacto o de WhatsApp: <strong class="text-white">nombre</strong> y
+            <strong class="text-white"> número de teléfono / WhatsApp</strong>. Opcionalmente, la
+            forma en que planeas adquirir tu vivienda. No recabamos datos personales sensibles.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">3. Finalidades del tratamiento</h2>
+          <p class="mb-2"><strong class="text-white">Finalidades primarias</strong> (necesarias para atenderte):</p>
+          <ul class="list-disc pl-5 flex flex-col gap-1">
+            <li>Contactarte para darte información sobre {siteConfig.siteName} y sus modelos de vivienda.</li>
+            <li>Agendar y coordinar recorridos, presenciales o por videollamada.</li>
+            <li>Orientarte sobre esquemas de crédito y dar seguimiento a tu proceso de compra.</li>
+          </ul>
+          <p class="mt-3 mb-2"><strong class="text-white">Finalidades secundarias</strong> (no necesarias; puedes negarte):</p>
+          <ul class="list-disc pl-5 flex flex-col gap-1">
+            <li>Enviarte información de nuevos desarrollos, modelos o promociones.</li>
+          </ul>
+          <p class="mt-3 text-sm text-slate-400">
+            Si no deseas que tus datos se usen para las finalidades secundarias, puedes indicarlo
+            escribiendo a <a href={`mailto:${email}`} class="text-emerald-400 hover:text-emerald-300">{email}</a>.
+            La negativa no será motivo para negarte los servicios que solicitas.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">4. Cómo y dónde se resguardan tus datos</h2>
+          <p>
+            Los datos que envías se reciben a través de WhatsApp y/o correo electrónico y son
+            resguardados por el responsable, con acceso limitado a su personal y asesores para los
+            fines aquí descritos. Conservamos tus datos solo durante el tiempo necesario para
+            atender tu solicitud y el seguimiento comercial correspondiente.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">5. Transferencias de datos</h2>
+          <p>
+            No transferimos tus datos personales a terceros con fines de mercadotecnia. Únicamente
+            podrán compartirse con el desarrollador de la vivienda o con instituciones financieras
+            cuando tú lo solicites (por ejemplo, para una precalificación de crédito), o cuando la
+            ley lo exija a una autoridad competente.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">6. Tus derechos ARCO</h2>
+          <p>
+            Tienes derecho a Acceder a tus datos, Rectificarlos si son inexactos, Cancelarlos
+            cuando consideres que no se requieren, y Oponerte a su tratamiento (derechos ARCO),
+            así como a revocar tu consentimiento. Para ejercerlos, envía tu solicitud a
+            <a href={`mailto:${email}`} class="text-emerald-400 hover:text-emerald-300"> {email}</a>,
+            indicando tu nombre, el derecho que deseas ejercer y una forma de contacto. Daremos
+            respuesta en los plazos que marca la LFPDPPP.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">7. Cookies y tecnologías de rastreo</h2>
+          <p>
+            Este sitio puede utilizar cookies y tecnologías similares (por ejemplo, herramientas de
+            medición y publicidad como Google Analytics o Meta Pixel) para entender el uso del sitio
+            y mejorar tu experiencia. Puedes deshabilitar las cookies desde la configuración de tu
+            navegador.
+          </p>
+        </div>
+
+        <div>
+          <h2 class="text-xl font-semibold text-white mb-2">8. Cambios a este aviso</h2>
+          <p>
+            Este aviso de privacidad puede actualizarse. Cualquier cambio se reflejará en esta misma
+            página, indicando la fecha de la última actualización.
+          </p>
+        </div>
+
+      </div>
+    </article>
+  </section>
+</BaseLayout>
