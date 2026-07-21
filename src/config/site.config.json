@@ -3,7 +3,7 @@
   "siteId": "lyrata",
   "siteName": "Lyrata Edén Urbano",
   "brandName": "Synexia Bienes Raíces",
-  "siteUrl": "https://synexia.mx",
+  "siteUrl": "https://lyrata.casasyn.com",
   "activeModelId": "livet-v2",
   "whatsapp": {
     "$comment": "Número internacional SIN '+' ni espacios (E.164; MX = 52 + 10 dígitos). Vacío = CTAs → formulario #contacto. Requiere WhatsApp activo en el número.",
