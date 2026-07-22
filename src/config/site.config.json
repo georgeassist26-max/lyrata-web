@@ -16,11 +16,11 @@
   "leadValue": 3370000,
   "currency": "MXN",
   "legal": {
-    "$comment": "Aviso de privacidad (LFPDPPP). responsibleLegalName y responsibleAddress son OBLIGATORIOS antes de publicar — mientras estén vacíos, la página muestra un aviso de PENDIENTE y NO debe salir a producción.",
-    "responsibleLegalName": "",
-    "responsibleAddress": "",
+    "$comment": "Aviso de privacidad (LFPDPPP). Para robustez legal se recomienda razón social formal (p. ej. con S.A. de C.V. si existe) y domicilio con calle/número; nivel ciudad + correo de contacto es aceptable para operar.",
+    "responsibleLegalName": "Synexia Bienes Raíces",
+    "responsibleAddress": "León, Guanajuato",
     "privacyEmail": "emilio.gs98@gmail.com",
-    "privacyUpdated": "2026-07-09"
+    "privacyUpdated": "2026-07-21"
   },
   "analytics": {
     "$comment": "IDs reales de cada plataforma. Vacío = ese script NO se carga (cero peso, cero errores).",
